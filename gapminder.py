@@ -4,6 +4,8 @@ import altair as alt
 
 st.title('Gap Minder')
 
+st.markdown("*Here's some text*")
+
 DATA_URL = ('https://raw.githubusercontent.com/MikeTrizna/binder_demo/master/gapminder_data.tsv')
 
 @st.cache
