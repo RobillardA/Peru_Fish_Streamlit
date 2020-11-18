@@ -1,7 +1,10 @@
 import streamlit as st
 from fastai.vision.all import *
+import altair as alt
+import pandas as pd
 import os
 import urllib
+from PIL import ImageOps
 
 def main():
     st.title('Pet Classifier')
@@ -9,10 +12,44 @@ def main():
     for filename in EXTERNAL_DEPENDENCIES.keys():
         download_file(filename)
     
+    model = load_model()
+    
     image = st.file_uploader("Upload a photo for classification", IMAGE_TYPES)
     if image:
         image_data = image.read()
         st.image(image_data, use_column_width=True)
+
+        prediction = model.predict(image_data)
+        
+        pred_chart = predictions_to_chart(prediction, classes = model.dls.vocab)
+        st.altair_chart(pred_chart, use_container_width=True)
+
+def predictions_to_chart(prediction, classes):
+    pred_rows = []
+    for i, conf in enumerate(list(prediction[2])):
+        pred_row = {'class': classes[i],
+                    'probability': round(float(conf) * 100,2)}
+        pred_rows.append(pred_row)
+    pred_df = pd.DataFrame(pred_rows)
+    pred_df.head()
+    top_probs = pred_df.sort_values('probability', ascending=False).head(4)
+    chart = (
+        alt.Chart(top_probs)
+        .mark_bar()
+        .encode(
+            x=alt.X("probability:Q", scale=alt.Scale(domain=(0, 100))),
+            y=alt.Y("class:N",
+                    sort=alt.EncodingSortField(field="probability", order="descending"))
+        )
+    )
+    return chart    
+
+@st.cache(allow_output_mutation=True)
+def load_model():
+    inf_model = load_learner('pet_classifier_resnet34.pkl', cpu=True)
+
+    return inf_model
+
 
 def download_file(file_path):
     # Don't download the file twice. (If possible, verify the download using the file length.)
