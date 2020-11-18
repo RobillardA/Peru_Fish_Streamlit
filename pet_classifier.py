@@ -14,7 +14,8 @@ def main():
     
     model = load_model()
     
-    image = st.file_uploader("Upload a photo for classification", IMAGE_TYPES)
+    st.markdown("Upload a pet (🐱 or 🐶) photo for classification. *Here's [one](https://photos.app.goo.gl/7ut2jPzaQ8uqH33T8) to use if you don't have one handy.*")
+    image = st.file_uploader("", IMAGE_TYPES)
     if image:
         image_data = image.read()
         st.image(image_data, use_column_width=True)
