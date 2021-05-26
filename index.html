@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>reveal-md</title>
+    <link rel="shortcut icon" href="./favicon.ico"/>
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/zenburn.css" />
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">slideOptions:
+  theme: solarized
+  progress: true
+</script></section><section  data-markdown><script type="text/template">
+## Streamlit: A Python framework for data apps
+
+**SI Carpentries Brown Bag**
+May 26, 2021
+</script></section><section  data-markdown><script type="text/template">
+## Sharing an analysis: Notebooks
+
+During Data Carpentry workshops, we showed how to work in either Jupyter notebooks (for Python) or R Markdown (for R)
+</script></section><section  data-markdown><script type="text/template">
+## Sharing an analysis: Notebooks
+
+As Paula showed at [March's Brown Bag](https://github.com/SmithsonianWorkshops/carpentries-brown-bag/tree/master/2021-03-24-rmarkdown), RMarkdown can combine code and explanation, and can be exported as PDF, Word, or HTML web page.
+
+Jupyter can do the same (except for Word)
+</script></section><section  data-markdown><script type="text/template">
+(Show Jupyter example)
+</script></section><section  data-markdown><script type="text/template">
+## In between: Binder
+
+**Binder** does provide some interactivity in your Python or R code, but only if the user is familiar with Python or R -- or you do a great job with your explanations.
+</script></section><section  data-markdown><script type="text/template">
+## In between: Binder
+
+I gave a Brown Bag demo on Binder way back in the *Before Times*: https://github.com/MikeTrizna/binder_demo
+</script></section><section  data-markdown><script type="text/template">
+## Interactive Data App
+
+R users have had a good canonical solution for this problem since 2012: RShiny
+</script></section><section  data-markdown><script type="text/template">
+## Interactive Data App
+
+![](https://i.imgur.com/Ti3L26z.png)
+</script></section><section  data-markdown><script type="text/template">
+## Interactive Data App
+
+Many similar Python solutions have been developed since then:
+* [Dash](https://dash.plotly.com/)
+* [Panel](https://panel.holoviz.org/)
+* [Voila](https://voila.readthedocs.io/en/stable/)
+</script></section><section  data-markdown><script type="text/template">
+## Streamlit
+
+But [Streamlit](https://streamlit.io/) (released in October 2019) has emerged as the top Python solution for building interactive data apps.
+
+![](https://i.imgur.com/dRxXgoy.png)
+</script></section><section  data-markdown><script type="text/template">
+## Streamlit
+
+Pros: Comes with a great collection of pre-built widgets that lets you develop fast
+
+Cons: You don't get the pixel-level customization that you might with other frameworks (or building your own web app)
+</script></section><section  data-markdown><script type="text/template">
+# DEMO TIME
+</script></section><section  data-markdown><script type="text/template">
+## Streamlit Sharing
+
+Streamlit [announced](https://blog.streamlit.io/introducing-streamlit-sharing/) a Beta program where they will host Streamlit apps for you, back in October 2020.
+
+Need to request an invite, and then you are limited to 3 apps being shared at a time.
+
+
+</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
