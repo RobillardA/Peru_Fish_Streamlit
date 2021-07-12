@@ -7,14 +7,14 @@ import urllib
 from PIL import ImageOps
 
 def main():
-    st.title('Pet Classifier')
+    st.title('Peru Fish Classifier')
 
     for filename in EXTERNAL_DEPENDENCIES.keys():
         download_file(filename)
     
     model = load_model()
     
-    st.markdown("Upload a pet (🐱 or 🐶) photo for classification. *Here's [one](https://photos.app.goo.gl/7ut2jPzaQ8uqH33T8) to use if you don't have one handy.*")
+    st.markdown("Fish photo for classification.")
     image = st.file_uploader("", IMAGE_TYPES)
     if image:
         image_data = image.read()
@@ -47,7 +47,7 @@ def predictions_to_chart(prediction, classes):
 
 @st.cache(allow_output_mutation=True)
 def load_model():
-    inf_model = load_learner('pet_classifier_resnet34.pkl', cpu=True)
+    inf_model = load_learner('perumixed3.pkl', cpu=True)
 
     return inf_model
 
@@ -94,8 +94,8 @@ def download_file(file_path):
 IMAGE_TYPES = ["png", "jpg"]
 
 EXTERNAL_DEPENDENCIES = {
-    "pet_classifier_resnet34.pkl": {
-        "url": "https://www.dropbox.com/s/feox6arze2gc14q/pet_classifier_resnet34.pkl?dl=1",
+    "perumixed3.pkl": {
+        "url": "https://www.dropbox.com/s/31e6wuwrlm66sco/perumixed3.pkl?dl=1",
         "size": 87826330
     }
 }
