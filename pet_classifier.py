@@ -5,6 +5,7 @@ import pandas as pd
 import os
 import urllib
 from PIL import ImageOps
+import pathlib
 
 def main():
     st.title('Peru Fish Classifier')
@@ -24,6 +25,10 @@ def main():
         
         pred_chart = predictions_to_chart(prediction, classes = model.dls.vocab)
         st.altair_chart(pred_chart, use_container_width=True)
+        
+plt = platform.system()
+print(plt)
+if plt == 'Linux' or plt == 'Darwin': pathlib.WindowsPath = pathlib.PosixPath
 
 def predictions_to_chart(prediction, classes):
     pred_rows = []
