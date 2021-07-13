@@ -4,6 +4,7 @@ import altair as alt
 import pandas as pd
 import os
 import urllib
+import pathlib
 from PIL import ImageOps
 import pathlib
 
@@ -46,6 +47,10 @@ def predictions_to_chart(prediction, classes):
     )
     return chart    
 
+plt = platform.system()
+print(plt)
+if plt == 'Linux' or plt == 'Darwin': pathlib.WindowsPath = pathlib.PosixPath
+    
 @st.cache(allow_output_mutation=True)
 def load_model():
     plt = platform.system()
