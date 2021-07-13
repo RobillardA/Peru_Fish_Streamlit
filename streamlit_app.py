@@ -5,6 +5,7 @@ import pandas as pd
 import os
 import urllib
 from PIL import ImageOps
+import pathlib
 
 def main():
     st.title('Peru Fish Classifier')
@@ -47,6 +48,9 @@ def predictions_to_chart(prediction, classes):
 
 @st.cache(allow_output_mutation=True)
 def load_model():
+    plt = platform.system()
+
+    if plt == 'Linux' or plt == 'Darwin': pathlib.WindowsPath = pathlib.PosixPath
     inf_model = load_learner('perumixed3.pkl', cpu=True)
 
     return inf_model
@@ -96,7 +100,7 @@ IMAGE_TYPES = ["png", "jpg"]
 EXTERNAL_DEPENDENCIES = {
     "perumixed3.pkl": {
         "url": "https://www.dropbox.com/s/31e6wuwrlm66sco/perumixed3.pkl?dl=1",
-        "size": 87826330
+        "size": 179319095
     }
 }
 

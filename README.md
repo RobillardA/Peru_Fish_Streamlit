@@ -1,2 +1,2 @@
-# streamlit_demo [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/miketrizna/streamlit_demo/main/pet_classifier.py)
+# streamlit_demo [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/RobillardA/Peru_Fish_Streamlit_demo/main/)
  Streamlit Demo
