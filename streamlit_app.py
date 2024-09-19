@@ -3,10 +3,10 @@ from fastai.vision.all import *
 import altair as alt
 import pandas as pd
 import os
-import urllib
+import platform
 import pathlib
+import gdown
 from PIL import ImageOps
-import pathlib
 
 def main():
     st.title('Peru Fish Classifier')
@@ -24,14 +24,14 @@ def main():
 
         prediction = model.predict(image_data)
         
-        pred_chart = predictions_to_chart(prediction, classes = model.dls.vocab)
+        pred_chart = predictions_to_chart(prediction, classes=model.dls.vocab)
         st.altair_chart(pred_chart, use_container_width=True)
 
 def predictions_to_chart(prediction, classes):
     pred_rows = []
     for i, conf in enumerate(list(prediction[2])):
         pred_row = {'class': classes[i],
-                    'probability': round(float(conf) * 100,2)}
+                    'probability': round(float(conf) * 100, 2)}
         pred_rows.append(pred_row)
     pred_df = pd.DataFrame(pred_rows)
     pred_df.head()
@@ -49,63 +49,53 @@ def predictions_to_chart(prediction, classes):
 
 plt = platform.system()
 print(plt)
-if plt == 'Linux' or plt == 'Darwin': pathlib.WindowsPath = pathlib.PosixPath
-    
-@st.cache(allow_output_mutation=True)
+if plt == 'Linux' or plt == 'Darwin': 
+    pathlib.WindowsPath = pathlib.PosixPath
+
+@st.cache_resource
 def load_model():
     plt = platform.system()
-
-    if plt == 'Linux' or plt == 'Darwin': pathlib.WindowsPath = pathlib.PosixPath
+    if plt == 'Linux' or plt == 'Darwin': 
+        pathlib.WindowsPath = pathlib.PosixPath
     inf_model = load_learner('perumixed3.pkl', cpu=True)
-
     return inf_model
 
-
 def download_file(file_path):
-    # Don't download the file twice. (If possible, verify the download using the file length.)
+    # Check if the file already exists and is the correct size
     if os.path.exists(file_path):
-        if "size" not in EXTERNAL_DEPENDENCIES[file_path]:
+        if "size" in EXTERNAL_DEPENDENCIES[file_path] and os.path.getsize(file_path) == EXTERNAL_DEPENDENCIES[file_path]["size"]:
             return
-        elif os.path.getsize(file_path) == EXTERNAL_DEPENDENCIES[file_path]["size"]:
-            return
+        else:
+            # If the size is incorrect, delete the file and re-download
+            os.remove(file_path)
 
-    # These are handles to two visual elements to animate.
     weights_warning, progress_bar = None, None
     try:
-        weights_warning = st.warning("Downloading %s..." % file_path)
+        weights_warning = st.warning(f"Downloading {file_path}...")
         progress_bar = st.progress(0)
-        with open(file_path, "wb") as output_file:
-            with urllib.request.urlopen(EXTERNAL_DEPENDENCIES[file_path]["url"]) as response:
-                length = int(response.info()["Content-Length"])
-                counter = 0.0
-                MEGABYTES = 2.0 ** 20.0
-                while True:
-                    data = response.read(8192)
-                    if not data:
-                        break
-                    counter += len(data)
-                    output_file.write(data)
-
-                    # We perform animation by overwriting the elements.
-                    weights_warning.warning("Downloading %s... (%6.2f/%6.2f MB)" %
-                        (file_path, counter / MEGABYTES, length / MEGABYTES))
-                    progress_bar.progress(min(counter / length, 1.0))
-
-    # Finally, we remove these visual elements by calling .empty().
+        
+        # Use gdown to download the file from Google Drive
+        gdown.download(EXTERNAL_DEPENDENCIES[file_path]["url"], file_path, quiet=False)
+        
     finally:
         if weights_warning is not None:
             weights_warning.empty()
         if progress_bar is not None:
             progress_bar.empty()
     
+    # Verify file size after download
+    if os.path.getsize(file_path) != EXTERNAL_DEPENDENCIES[file_path]["size"]:
+        st.error(f"Failed to download {file_path} correctly. Size mismatch.")
+        os.remove(file_path)
+
     return
 
 IMAGE_TYPES = ["png", "jpg"]
 
 EXTERNAL_DEPENDENCIES = {
     "perumixed3.pkl": {
-        "url": "https://www.dropbox.com/s/31e6wuwrlm66sco/perumixed3.pkl?dl=1",
-        "size": 179319095
+        "url": "https://drive.google.com/uc?export=download&id=17Dxdvc4OpsFI0QEeQgh7oVspWoNQGuZ1",  # Direct download link from Google Drive
+        "size": 179319095  # Ensure the correct file size is provided
     }
 }
 
